@@ -5,8 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Importar los componentes principales
 import LoginGeneral from '../components/Login/LoginGeneral';
 import Dashboard from '../components/Menu/Dashboard';
-import Empleados from '../components/Empleados/Empleados'; // Asegúrate de que la ruta sea correcta
-
+import Empleados from '../components/Empleados/Empleados'; 
+import Productos from '../components/Productos/Productos';
+import Cobrar from '../components/Cobrar/Cobrar';
+import ProductosDef from '../components/ProductosDef/ProductosDef';
+import ReporteVentas from '../components/ReporteVentas/ReporteVentas';
 const AppRouter = () => {
   return (
     <Router>
@@ -21,6 +24,10 @@ const AppRouter = () => {
           {/* Otras rutas dentro del Dashboard */}
           <Route path="empleados" element={<Empleados />} />
           {/* Puedes agregar más rutas de empleados aquí */}
+          <Route path="productos" element={<Productos />} />
+          <Route path="cobrar" element={<Cobrar />} />
+          <Route path="productos-defectuosos" element={<ProductosDef />} />
+          <Route path="reporte-ventas" element={<ReporteVentas />} />
         </Route>
       </Routes>
     </Router>
