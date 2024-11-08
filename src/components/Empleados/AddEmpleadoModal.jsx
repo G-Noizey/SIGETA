@@ -3,7 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
+const AddEmpleadoModal = ({ show, handleClose, fetchUsuarios }) => {
+    
     const [nombre, setNombre] = useState('');
     const [apellidos, setApellidos] = useState('');
     const [contrasena, setContrasena] = useState('');
@@ -25,6 +26,7 @@ const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
                 showConfirmButton: false,
                 timer: 1500,
             }).then(() => {
+                fetchUsuarios();
                 setNombre('');
                 setApellidos('');
                 setContrasena('');
@@ -42,6 +44,8 @@ const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
             });
         }
     };
+
+    
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -81,7 +85,7 @@ const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
                             placeholder="Ingrese la edad"
                             value={edad}
                             onChange={(e) => {
-                                const value = Math.max(1, e.target.value); 
+                                const value = Math.max(1, Math.min(65, e.target.value));
                                 setEdad(value);
                             }}
                         />
@@ -93,7 +97,11 @@ const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
                             type="text"
                             placeholder="Ingrese el teléfono"
                             value={telefono}
-                            onChange={(e) => setTelefono(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, '');
+                                setTelefono(value);
+                            }}
+                            
                             minLength={10} 
                             maxLength={12}
                         />
