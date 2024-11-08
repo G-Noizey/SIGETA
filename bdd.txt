@@ -1,0 +1,25 @@
+CREATE DATABASE sigeta;
+USE sigeta;
+
+DROP TABLE usuarios;
+CREATE TABLE usuarios (
+    idusuario INT PRIMARY KEY AUTO_INCREMENT,    
+    nombre VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+	rol BOOLEAN NOT NULL,    -- Rol (TRUE para gueros, FALSE para morenos)
+    usuario VARCHAR(30) NOT NULL UNIQUE,         
+    contrasena VARCHAR(20) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
+    estado INT NOT NULL,
+    telefono BIGINT NOT NULL,
+    edad INT
+);
+
+INSERT INTO usuarios (nombre, apellidos, rol, usuario, contrasena, correo, estado, telefono, edad) 
+VALUES ('Juan', 'Regalado', 1, 'admin', 'root', '20223tn159@utez.edu.mx.com', 1, 7772345522, 24);
+
+INSERT INTO usuarios (nombre, apellidos, rol, usuario, contrasena, correo, estado, telefono, edad) 
+VALUES ('Vulmaro', 'Gómez', 0, 'empleado', 'root2', 'alanyagami@gmail.com', 0, 7341023245, 20);
+
+INSERT INTO usuarios (nombre, apellidos, rol, usuario, contrasena, correo, estado, telefono, edad) 
+VALUES ('Josman', 'Oficial', 0, 'jos', 'root', 'yakult@gmail.com', 1, 7341023245, 20);

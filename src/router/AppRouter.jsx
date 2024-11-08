@@ -10,28 +10,28 @@ import Productos from '../components/Productos/Productos';
 import Cobrar from '../components/Cobrar/Cobrar';
 import ProductosDef from '../components/ProductosDef/ProductosDef';
 import ReporteVentas from '../components/ReporteVentas/ReporteVentas';
+import ProtectedRoute from '../router/ProtectedRoute';
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
         {/* Ruta por defecto al LoginGeneral */}
         <Route path="/" element={<LoginGeneral />} />
-        
-        {/* Ruta al Dashboard sin protección */}
-        <Route path="/dashboard" element={<Dashboard />}>
-          {/* Ruta por defecto dentro del Dashboard */}
-          <Route index element={<Empleados />} /> {/* Esto carga Empleados por defecto */}
-          {/* Otras rutas dentro del Dashboard */}
-          <Route path="empleados" element={<Empleados />} />
-          {/* Puedes agregar más rutas de empleados aquí */}
-          <Route path="productos" element={<Productos />} />
-          <Route path="cobrar" element={<Cobrar />} />
-          <Route path="productos-defectuosos" element={<ProductosDef />} />
-          <Route path="reporte-ventas" element={<ReporteVentas />} />
+
+        {/* Ruta protegida para el Dashboard */}
+        <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} allowedRoles={["0", "1"]} />}>
+        <Route index element={<ProtectedRoute element={Productos} allowedRoles={["0", "1"]} />} />
+          <Route element={<ProtectedRoute element={Empleados} allowedRoles={["1"]} />} /> 
+          <Route path="empleados" element={<ProtectedRoute element={Empleados} allowedRoles={["1"]} />} />
+          <Route path="productos" element={<ProtectedRoute element={Productos} allowedRoles={["0", "1"]} />} />
+          <Route path="cobrar" element={<ProtectedRoute element={Cobrar} allowedRoles={["0", "1"]} />} />
+          <Route path="productos-defectuosos" element={<ProtectedRoute element={ProductosDef} allowedRoles={["1"]} />} />
+          <Route path="reporte-ventas" element={<ProtectedRoute element={ReporteVentas} allowedRoles={["1"]} />} />
         </Route>
       </Routes>
     </Router>
   );
 };
+
 
 export default AppRouter;

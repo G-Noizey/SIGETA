@@ -7,18 +7,24 @@ import logo from '../../assets/Logo.png'; // Asegúrate de que la ruta sea corre
 import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap
 
 const Dashboard = () => {
+    const rol = sessionStorage.getItem("rol");
     const navLinks = [
-        { path: 'empleados', label: 'Empleados', icon: <FaUser /> },
+        ...(rol === "1" ? [{ path: 'empleados', label: 'Empleados', icon: <FaUser /> }] : []),
         { path: 'productos', label: 'Productos', icon: <FaBox /> },
         { path: 'cobrar', label: 'Cobrar', icon: <FaClipboardList /> },
-        { path: 'productos-defectuosos', label: 'Productos defectuosos', icon: <FaExclamationTriangle /> },
-        { path: 'reporte-ventas', label: 'Reporte de ventas', icon: <FaChartLine /> },
-    ];
+        ...(rol === "1" ? [
+          { path: 'productos-defectuosos', label: 'Productos defectuosos', icon: <FaExclamationTriangle /> },
+          { path: 'reporte-ventas', label: 'Reporte de ventas', icon: <FaChartLine /> }
+        ] : [])
+      ];
+    
 
     const handleLogout = () => {
-        // Lógica para cerrar sesión
-        console.log('Cerrar sesión');
-    };
+        sessionStorage.removeItem("usuario");
+        sessionStorage.removeItem("rol");
+        window.location.href = "/";
+      };
+      
 
     return (
         <div style={{ fontFamily: 'Roboto, sans-serif' }}> {/* Aplica la fuente Roboto a todo el componente */}
