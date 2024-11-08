@@ -1,20 +1,46 @@
-// src/components/Empleados/AddEmpleadoModal.jsx
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
-const AddEmpleadoModal = ({ show, handleClose }) => {
+const AddEmpleadoModal = ({ show, handleClose, setUsuarios }) => {
     const [nombre, setNombre] = useState('');
-    const [apellidoPaterno, setApellidoPaterno] = useState('');
-    const [apellidoMaterno, setApellidoMaterno] = useState('');
+    const [apellidos, setApellidos] = useState('');
+    const [contrasena, setContrasena] = useState('');
     const [edad, setEdad] = useState('');
     const [telefono, setTelefono] = useState('');
     const [correo, setCorreo] = useState('');
+    const [usuario, setUsuario] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aquí puedes manejar la lógica para añadir el empleado
-        console.log({ nombre, apellidoPaterno, apellidoMaterno, edad, telefono, correo });
-        handleClose(); // Cierra el modal
+        const nuevoEmpleado = {
+            nombre, apellidos, contrasena, edad, telefono, correo, usuario
+        };
+        try {
+            const response = await axios.post('http://localhost:3000/crear-usuario', nuevoEmpleado);
+            Swal.fire({
+                icon: 'success',
+                title: 'Empleado creado exitosamente',
+                showConfirmButton: false,
+                timer: 1500,
+            }).then(() => {
+                setNombre('');
+                setApellidos('');
+                setContrasena('');
+                setEdad('');
+                setTelefono('');
+                setCorreo('');
+                setUsuario('');
+                handleClose();
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Hubo un error al crear el empleado',
+            });
+        }
     };
 
     return (
@@ -25,32 +51,26 @@ const AddEmpleadoModal = ({ show, handleClose }) => {
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formNombre" style={{ marginBottom: '15px' }}>
-                        <Form.Label>Nombre</Form.Label>
+                        <Form.Label>Nombre(s)</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Ingrese el nombre"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
+                            minLength={5} 
+                            maxLength={50}
                         />
                     </Form.Group>
 
-                    <Form.Group controlId="formApellidoPaterno" style={{ marginBottom: '15px' }}>
-                        <Form.Label>Apellido Paterno</Form.Label>
+                    <Form.Group controlId="formApellidos" style={{ marginBottom: '15px' }}>
+                        <Form.Label>Apellidos</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Ingrese el apellido paterno"
-                            value={apellidoPaterno}
-                            onChange={(e) => setApellidoPaterno(e.target.value)}
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId="formApellidoMaterno" style={{ marginBottom: '15px' }}>
-                        <Form.Label>Apellido Materno</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Ingrese el apellido materno"
-                            value={apellidoMaterno}
-                            onChange={(e) => setApellidoMaterno(e.target.value)}
+                            value={apellidos}
+                            onChange={(e) => setApellidos(e.target.value)}
+                            minLength={5} 
+                            maxLength={50}
                         />
                     </Form.Group>
 
@@ -60,7 +80,10 @@ const AddEmpleadoModal = ({ show, handleClose }) => {
                             type="number"
                             placeholder="Ingrese la edad"
                             value={edad}
-                            onChange={(e) => setEdad(e.target.value)}
+                            onChange={(e) => {
+                                const value = Math.max(1, e.target.value); 
+                                setEdad(value);
+                            }}
                         />
                     </Form.Group>
 
@@ -71,6 +94,8 @@ const AddEmpleadoModal = ({ show, handleClose }) => {
                             placeholder="Ingrese el teléfono"
                             value={telefono}
                             onChange={(e) => setTelefono(e.target.value)}
+                            minLength={10} 
+                            maxLength={12}
                         />
                     </Form.Group>
 
@@ -81,6 +106,32 @@ const AddEmpleadoModal = ({ show, handleClose }) => {
                             placeholder="Ingrese el correo"
                             value={correo}
                             onChange={(e) => setCorreo(e.target.value)}
+                            minLength={12} 
+                            maxLength={50}
+                        />
+                    </Form.Group>
+                    
+
+                    <Form.Group controlId="formUsuario" style={{ marginBottom: '15px' }}>
+                        <Form.Label>Usuario</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Ingresa el usuario"
+                            value={usuario}
+                            onChange={(e) => setUsuario(e.target.value)}
+                            minLength={5} 
+                            maxLength={30}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="formContrasena" style={{ marginBottom: '15px' }}>
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control
+                            type="password"
+                            placeholder="Ingresa la contraseña"
+                            value={contrasena}
+                            onChange={(e) => setContrasena(e.target.value)}
+                            minLength={9} 
+                            maxLength={20}
                         />
                     </Form.Group>
 

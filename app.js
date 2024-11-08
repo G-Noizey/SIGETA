@@ -63,6 +63,45 @@ app.post("/login", (req, res) => {
   });
 });
 
+// Ruta para crear un nuevo usuario
+app.post("/crear-usuario", (req, res) => {
+  const { nombre, apellidos, usuario, contrasena, correo, telefono, edad } = req.body;
+
+  if (!nombre || !apellidos || !usuario || !contrasena || !correo || !telefono) {
+    return res.status(400).json({ message: "Todos los campos son obligatorios" });
+  }
+
+  const rol = 0;
+
+  const query = `
+    INSERT INTO usuarios (nombre, apellidos, rol, usuario, contrasena, correo, estado, telefono, edad)
+    VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)
+  `;
+
+  db.query(query, [nombre, apellidos, rol, usuario, contrasena, correo, telefono, edad], (err, result) => {
+    if (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ message: "El usuario o correo ya están en uso" });
+      }
+      return res.status(500).json({ message: "Error al crear el usuario" });
+    }
+    res.status(201).json({ message: "Usuario creado exitosamente" });
+  });
+});
+
+// Ruta para obtener todos los usuarios
+app.get("/api/usuarios", (req, res) => {
+  const query = "SELECT * FROM usuarios"; 
+
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).send({ message: "Error al obtener los usuarios", error: err });
+    }
+    res.status(200).json(results); 
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
 });

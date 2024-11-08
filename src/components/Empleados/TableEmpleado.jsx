@@ -1,32 +1,53 @@
 // src/components/Empleados/TableEmpleado.jsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Table, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import { FaEdit, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import AddEmpleadoModal from './AddEmpleadoModal';
+import axios from 'axios';
 
-// Datos de ejemplo (puedes reemplazarlo con datos reales)
-const data = [
-    { nombre: 'Ejemplo Nombre', apellidoPaterno: 'Apellido Paterno', apellidoMaterno: 'Apellido Materno', edad: 30, telefono: '1234567890', correo: 'ejemplo@correo.com' },
-    // Agrega más datos según sea necesario
-];
 
 const TableEmpleado = () => {
     const [showModal, setShowModal] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [pageSize, setPageSizeState] = useState(5); // Estado para el tamaño de página
+    const [usuarios, setUsuarios] = useState([]);
+    const [data, setData] = useState([]);
 
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
 
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/usuarios');
+
+                const usuariosData = response.data.map((usuario) => ({
+                    nombre: usuario.nombre,
+                    apellidos: usuario.apellidos,
+                    edad: usuario.edad,
+                    telefono: usuario.telefono,
+                    correo: usuario.correo,
+                    usuario: usuario.usuario,
+                }));
+
+                setData(usuariosData); 
+            } catch (error) {
+                console.error('Error al obtener los usuarios:', error);
+            }
+        };
+
+        fetchUsuarios(); 
+    }, []); 
+
     const columns = useMemo(
         () => [
-            { Header: 'Nombre', accessor: 'nombre' },
-            { Header: 'Apellido Paterno', accessor: 'apellidoPaterno' },
-            { Header: 'Apellido Materno', accessor: 'apellidoMaterno' },
+            { Header: 'Nombre(s)', accessor: 'nombre' },
+            { Header: 'Apellidos', accessor: 'apellidos' },
             { Header: 'Edad', accessor: 'edad' },
             { Header: 'Teléfono', accessor: 'telefono' },
             { Header: 'Correo', accessor: 'correo' },
+            { Header: 'Usuario', accessor: 'usuario' },
             {
                 Header: 'Acciones',
                 Cell: () => (

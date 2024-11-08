@@ -12,7 +12,7 @@ const Empleado = () => {
     // Función para editar empleado (puedes actualizar estos datos según sea necesario)
     const handleEdit = (empleado) => {
         console.log('Editar empleado', empleado);
-        // Aquí puedes abrir un modal o llevar al usuario a un formulario para editar los datos
+        // Aquí puedes abrir un modal o llevar al usuario a un formulario para editar los datos PENDIENTE NO HACER
     };
 
     return (
