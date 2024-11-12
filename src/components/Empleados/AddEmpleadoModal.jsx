@@ -19,7 +19,7 @@ const AddEmpleadoModal = ({ show, handleClose, fetchUsuarios }) => {
             nombre, apellidos, contrasena, edad, telefono, correo, usuario
         };
         try {
-            const response = await axios.post('http://localhost:3000/crear-usuario', nuevoEmpleado);
+            const response = await axios.post('http://localhost:3000/usuarios/crear-usuario', nuevoEmpleado);
             Swal.fire({
                 icon: 'success',
                 title: 'Empleado creado exitosamente',

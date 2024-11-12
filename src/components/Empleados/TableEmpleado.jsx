@@ -21,7 +21,7 @@ const TableEmpleado = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/usuarios");
+      const response = await axios.get("http://localhost:3000/usuarios/api/usuarios");
       const usuariosData = response.data.map((usuario) => ({
         id: usuario.idusuario,
         nombre: usuario.nombre,
@@ -44,7 +44,7 @@ const TableEmpleado = () => {
 
   const handleDelete = async (empleado) => {
     const isInactive = empleado.estado === "Inactivo";
-    const action = isInactive ? "activar" : "inactivar";
+    const action = isInactive ? "activa" : "inactiva";
     const message = isInactive
       ? `¿Estás seguro de activar nuevamente la cuenta de ${empleado.usuario}?`
       : `¿Estás seguro de inactivar la cuenta de ${empleado.usuario}?`;
@@ -61,7 +61,7 @@ const TableEmpleado = () => {
 
       if (result.isConfirmed) {
         const response = await axios.put(
-          `http://localhost:3000/modificar-estado/${empleado.id}`,
+          `http://localhost:3000/usuarios/modificar-estado/${empleado.id}`,
           {
             estado: isInactive ? 1 : 0,
           }

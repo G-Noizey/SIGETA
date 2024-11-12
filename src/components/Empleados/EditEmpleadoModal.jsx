@@ -31,7 +31,7 @@ const EditEmpleadoModal = ({ show, handleClose, empleado, fetchUsuarios }) => {
   
     try {
       const response = await axios.put(
-        `http://localhost:3000/modificar-usuario/${empleadoData.id}`,
+        `http://localhost:3000/usuarios/modificar-usuario/${empleadoData.id}`,
         empleadoData
       );
       

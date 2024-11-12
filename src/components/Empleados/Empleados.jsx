@@ -13,7 +13,7 @@ const Empleado = () => {
   useEffect(() => {
     const fetchEmpleados = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/usuarios");
+        const response = await axios.get("http://localhost:3000/usuarios/api/usuarios");
         setEmpleados(response.data);
       } catch (error) {
         console.error("Error al obtener los empleados", error);
@@ -37,7 +37,7 @@ const Empleado = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/usuarios");
+      const response = await axios.get("http://localhost:3000/usuarios/api/usuarios");
       setEmpleados(response.data);
     } catch (error) {
       console.error("Error al obtener los empleados", error);
