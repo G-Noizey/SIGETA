@@ -3,53 +3,56 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import CardProducto from './CardProducto';
 import AddProductoModal from './AddProductoModal';
+import AddMarcaModal from './AddMarcaModal';
+import AddAbarroteModal from './AddAbarroteModal';
 
 // Datos de ejemplo de productos
 const productos = [
     {
         id: 1,
         nombre: 'Producto A',
-        precio: 150,
+        precio: 120,
         estado: 'Disponible',
         imagen: 'https://via.placeholder.com/150',
         stock: 10
     },
-    {
-        id: 2,
-        nombre: 'Producto B',
-        precio: 200,
-        estado: 'Agotado',
-        imagen: 'https://via.placeholder.com/150',
-        stock: 0
-    },
-    // Agrega más productos según sea necesario
 ];
 
 const Productos = () => {
     const [showModal, setShowModal] = useState(false);
+    const [showModalMarca, setShowModalMarca] = useState(false);
+    const [showModalAbarrote, setShowModalAbarrote] = useState(false);
 
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
+    const handleShowMarca = () => setShowModalMarca(true);
+    const handleCloseMarca = () => setShowModalMarca(false);
+    const handleShowAbarrote = () => setShowModalAbarrote(true);
+    const handleCloseAbarrote = () => setShowModalAbarrote(false);
 
     return (
         <div>
-            {/* Título en la parte superior */}
             <h2 style={{ marginBottom: '20px' }}>Gestión de productos</h2>
 
-            {/* Botón para agregar un nuevo producto */}
-            <Button variant="success" onClick={handleShow} style={{ marginBottom: '30px', width: '12%' }}>
-                Añadir
+            <Button variant="success" onClick={handleShow} style={{ marginBottom: '30px', width: '12%', marginRight: '38px' }}>
+                Añadir Producto
+            </Button>
+            <Button variant="success" onClick={handleShowAbarrote} style={{ marginBottom: '30px', width: '12%', marginRight: '38px'}}>
+                Añadir Abarrote
+            </Button>
+            <Button variant="success" onClick={handleShowMarca} style={{ marginBottom: '30px', width: '12%' }}>
+                Añadir Marca
             </Button>
 
-            {/* Contenedor para las tarjetas */}
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                 {productos.map((producto) => (
                     <CardProducto key={producto.id} producto={producto} />
                 ))}
             </div>
 
-            {/* Modal para añadir un nuevo producto */}
             <AddProductoModal show={showModal} handleClose={handleClose} />
+            <AddMarcaModal show={showModalMarca} handleClose={handleCloseMarca} />
+            <AddAbarroteModal show={showModalAbarrote} handleClose={handleCloseAbarrote} />
         </div>
     );
 };
